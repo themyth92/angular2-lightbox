@@ -28,7 +28,11 @@
 
     packages: {
       main: {
-        main: './main.ts',
+        main: './main',
+        defaultExtension: 'ts'
+      },
+      lightbox: {
+        main: './index',
         defaultExtension: 'ts'
       },
       rxjs: {

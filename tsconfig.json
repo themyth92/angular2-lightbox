@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["es2015", "dom"],
+    "module": "commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "outDir": "temp",
+    "sourceMap": true,
+    "rootDir": "./demo",
+    "outDir": ""
+  },
+  "compileOnSave": false,
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "src",
+    "srcBK"
+  ]
+}

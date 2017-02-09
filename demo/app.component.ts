@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-// import { Lightbox, LightboxConfig } from 'lightbox';
+import { Lightbox } from 'lightbox';
 
 @Component({
   selector: 'demo',
@@ -12,26 +12,26 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
-  albums: Album[] = [];
-  options: Object = {};
-  constructor() {
+  private _lightbox: Lightbox;
+  private _albums: Array<Object> = [];
+  private _options: Object = {};
+
+  constructor(_lightbox: Lightbox) {
     for (let i = 1; i <= 4; i++) {
       const src = 'demo/img/image' + i + '.jpg';
       const caption = 'Image ' + i + ' caption here';
       const thumb = 'demo/img/image' + i + '-thumb.jpg';
-      let album = {};
+      const album = {
+         src: src,
+         caption: caption,
+         thumb: thumb
+      };
 
-      album.src = src;
-      album.caption = caption;
-      album.thumb = thumb;
-      this.albums.push(album);
+      this._albums.push(album);
     }
-
-    // change default config globally
-    // this._lightboxConfig.wrapAround = true;
   }
 
-  open(index) {
-
+  open(index: number) {
+    this._lightbox.open(this._albums, number);
   }
 }
