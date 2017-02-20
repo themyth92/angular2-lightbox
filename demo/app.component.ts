@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Lightbox } from 'lightbox';
 
 @Component({
   selector: 'demo',
   template: `
     <div class="row text-center">
-      <div *ngFor="let image of albums; let i=index" class="img-row">
+      <div *ngFor="let image of _albums; let i=index" class="img-row">
         <img class="img-responsive img-frame" [src]="image.thumb" (click)="open(i)"/>
       </div>
     </div>
   `
 })
 export class AppComponent {
-  private _lightbox: Lightbox;
   private _albums: Array<Object> = [];
   private _options: Object = {};
 
-  constructor(_lightbox: Lightbox) {
+  constructor(private _lightbox: Lightbox) {
     for (let i = 1; i <= 4; i++) {
       const src = 'demo/img/image' + i + '.jpg';
       const caption = 'Image ' + i + ' caption here';
@@ -32,6 +31,6 @@ export class AppComponent {
   }
 
   open(index: number) {
-    this._lightbox.open(this._albums, number);
+    this._lightbox.open(this._albums, index);
   }
 }

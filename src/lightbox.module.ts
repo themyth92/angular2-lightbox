@@ -1,14 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { LightboxOverlayComponent } from './lightbox-overlay.component';
 import { Lightbox } from './lightbox.service';
+import { LightboxOverlayComponent } from './lightbox-overlay.component';
+import { LightboxComponent } from './lightbox.component';
 import { NgModule } from '@angular/core';
 
 @NgModule({
-  declarations: [ LightboxOverlayComponent ],
+  declarations: [ LightboxOverlayComponent, LightboxComponent ],
   providers: [
     Lightbox,
     { provide: 'Window', useValue: window }
   ],
-  entryComponents: [ LightboxOverlayComponent ],
+  entryComponents: [ LightboxOverlayComponent, LightboxComponent ]
 })
 export class LightboxModule { }
