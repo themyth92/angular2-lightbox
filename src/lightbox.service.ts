@@ -9,6 +9,7 @@ import {
 import { DOCUMENT } from '@angular/platform-browser';
 import { LightboxOverlayComponent } from './lightbox-overlay.component';
 import { LightboxComponent } from './lightbox.component';
+import { LightboxConfig } from './lightbox-config.service';
 
 @Injectable()
 export class Lightbox {
@@ -16,29 +17,31 @@ export class Lightbox {
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _injector: Injector,
     private _applicationRef: ApplicationRef,
+    private _lightboxConfig: LightboxConfig,
     @Inject(DOCUMENT) private _documentRef: DOCUMENT
   ) {}
 
   open(album: Array, curIndex: number = 0, options: Object = {}): Promise {
     const overlayComponentRef = this._createComponent(LightboxOverlayComponent);
     const componentRef = this._createComponent(LightboxComponent);
+    const newOptions = {};
 
-    return new Promise((resolve, reject) => {
-      componentRef.instance.album = album;
-      componentRef.instance.currentImageIndex = curIndex;
-      componentRef.instance.options = options;
-      this._applicationRef.attachView(overlayComponentRef.hostView);
-      this._applicationRef.attachView(componentRef.hostView);
-      overlayComponentRef.onDestroy(() => {
-        this._applicationRef.detachView(overlayComponentRef.hostView);
-      });
-      componentRef.onDestroy(() => {
-        this._applicationRef.detachView(componentRef.hostView);
-      });
-
-      this._documentRef.querySelector('body').appendChild(overlayComponentRef.location.nativeElement);
-      this._documentRef.querySelector('body').appendChild(componentRef.location.nativeElement);
+    Object.assign(newOptions, this._lightboxConfig, options);
+    componentRef.instance.album = album;
+    componentRef.instance.currentImageIndex = curIndex;
+    componentRef.instance.options = newOptions;
+    overlayComponentRef.instance.options = newOptions;
+    this._applicationRef.attachView(overlayComponentRef.hostView);
+    this._applicationRef.attachView(componentRef.hostView);
+    overlayComponentRef.onDestroy(() => {
+      this._applicationRef.detachView(overlayComponentRef.hostView);
     });
+    componentRef.onDestroy(() => {
+      this._applicationRef.detachView(componentRef.hostView);
+    });
+
+    this._documentRef.querySelector('body').appendChild(overlayComponentRef.location.nativeElement);
+    this._documentRef.querySelector('body').appendChild(componentRef.location.nativeElement);
   }
 
   _createComponent(ComponentClass: any): ComponentRef {

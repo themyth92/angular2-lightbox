@@ -44,11 +44,9 @@ import { DOCUMENT } from '@angular/platform-browser';
   }
 })
 export class LightboxComponent implements AfterViewInit, OnDestroy {
-  @Input() album;
-  @Input() currentImageIndex;
-  @Input() options;
-  
-  //@ViewChild('lightbox') _lightboxElem: ElementRef;
+  @Input() album: Array<Object>;
+  @Input() currentImageIndex: number;
+  @Input() options: Object;
   @ViewChild('outerContainer') _outerContainerElem: ElementRef;
   @ViewChild('container') _containerElem: ElementRef;
   @ViewChild('leftArrow') _leftArrowElem: ElementRef;
@@ -58,13 +56,11 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   @ViewChild('image') _imageElem: ElementRef;
   @ViewChild('caption') _captionElem: ElementRef;
   @ViewChild('number') _numberElem: ElementRef;
-
   private _content: object;
   private _ui: object;
   private _cssValue: object;
   private _content: object;
   private _event: object;
-
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
@@ -104,7 +100,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._lightboxElem = this._elemRef;
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     // need to init css value here, after the view ready
     // actually these values are always 0
     this._cssValue = {
@@ -115,7 +111,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       imageBorderWidthTop: parseInt(this._getCssStyleValue(this._imageElem, 'border-top-width'), 10),
       imageBorderWidthBottom: parseInt(this._getCssStyleValue(this._imageElem, 'border-bottom-width'), 10),
       imageBorderWidthLeft: parseInt(this._getCssStyleValue(this._imageElem, 'border-left-width'), 10),
-      imageBorderWidthRight: parseInt(this._getCssStyleValue(this._imageElem, 'border-right-width'), 10),
+      imageBorderWidthRight: parseInt(this._getCssStyleValue(this._imageElem, 'border-right-width'), 10)
     };
 
     if (this._validateInputData()) {
@@ -124,11 +120,11 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
     this._end();
   }
 
-  close($event: any) {
+  public close($event: any): void {
     if ($event.target.classList.contains('lightbox') ||
       $event.target.classList.contains('lb-loader') ||
       $event.target.classList.contains('lb-close')) {
@@ -136,7 +132,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  nextImage() {
+  public nextImage(): void {
     if (this.currentImageIndex === this.album.length - 1) {
       this._changeImage(0);
     } else {
@@ -144,7 +140,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  prevImage() {
+  public prevImage(): void {
     if (this.currentImageIndex === 0) {
       this._changeImage(this.album.length - 1);
     } else {
@@ -152,7 +148,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _validateInputData() {
+  private _validateInputData(): boolean {
     if (this.album &&
       this.album instanceof Array &&
       this.album.length > 0) {
@@ -180,7 +176,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     return true;
   }
 
-  private _registerImageLoadingEvent() {
+  private _registerImageLoadingEvent(): void {
     // start to register the event and
     // be ready for callback
     this._event.load = this._rendererRef.listen(this._imageElem.nativeElement, 'load', () => {
@@ -191,7 +187,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   /**
    * Fire when the image is loaded
    */
-  private _onLoadImageSuccess() {
+  private _onLoadImageSuccess(): void {
     if (!this.options.disableKeyboardNav) {
       // unbind keyboard event during transition
       this._disableKeyboardNav();
@@ -235,11 +231,13 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._sizeContainer(imageWidth, imageHeight);
   }
 
-  private _sizeContainer(imageWidth: number, imageHeight: number) {
+  private _sizeContainer(imageWidth: number, imageHeight: number): void {
     const oldWidth  = this._outerContainerElem.nativeElement.offsetWidth;
     const oldHeight = this._outerContainerElem.nativeElement.offsetHeight;
-    const newWidth  = imageWidth + this._cssValue.containerRightPadding + this._cssValue.containerLeftPadding;
-    const newHeight = imageHeight + this._cssValue.containerTopPadding + this._cssValue.containerBottomPadding;
+    const newWidth  = imageWidth + this._cssValue.containerRightPadding + this._cssValue.containerLeftPadding +
+      this._cssValue.imageBorderWidthLeft + this._cssValue.imageBorderWidthRight;
+    const newHeight = imageHeight + this._cssValue.containerTopPadding + this._cssValue.containerBottomPadding +
+      this._cssValue.imageBorderWidthTop + this._cssValue.imageBorderWidthBottom;
 
     if (oldWidth !== newWidth || oldHeight !== newHeight) {
       this._rendererRef.setElementStyle(this._outerContainerElem.nativeElement, 'width', `${newWidth}px`);
@@ -261,7 +259,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     } 
   }
 
-  private _postResize(newWidth: number, newHeight: number) {
+  private _postResize(newWidth: number, newHeight: number): void {
     // unbind resize event
     if (Array.isArray(this._event.transitions)) {
       this._event.transitions.forEach(eventHandler => {
@@ -275,7 +273,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._showImage();
   }
 
-  private _showImage() {
+  private _showImage(): void {
     this._ui.showReloader = false;
     this._updateNav();
     this._updateDetails();
@@ -284,7 +282,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _prepareComponent() {
+  private _prepareComponent(): void {
     // add css3 animation
     this._addCssAnimation();
 
@@ -292,18 +290,19 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._positionLightBox();
   }
 
-  private _positionLightBox() {
+  private _positionLightBox(): void {
     const top = this.options.positionFromTop;
     const left = 0;
 
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${top}px`);
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'left', `${left}px`);
+    this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'display', 'block');
   }
 
   /**
    * addCssAnimation add css3 classes for animate lightbox
    */
-  private _addCssAnimation() {
+  private _addCssAnimation(): void {
     const resizeDuration = this.options.resizeDuration;
     const fadeDuration = this.options.fadeDuration;
 
@@ -329,7 +328,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       '-animation-duration', `${fadeDuration}s`);
   }
 
-  private _end() {
+  private _end(): void {
     if (!this.options.disableKeyboardNav) {
       // unbind keyboard event
       this._disableKeyboardNav();
@@ -341,7 +340,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _updateDetails() {
+  private _updateDetails(): void {
     // update the caption
     if (typeof this.album[this.currentImageIndex].caption !== 'undefined' &&
       this.album[this.currentImageIndex].caption !== '') {
@@ -357,12 +356,12 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _albumLabel() {
+  private _albumLabel(): void {
     // due to {this.currentImageIndex} is set from 0 to {this.album.length} - 1
     return `Image ${Number(this.currentImageIndex + 1)} of ${this.album.length}`;
   }
 
-  private _changeImage(newIndex: number) {
+  private _changeImage(newIndex: number): void {
     this.currentImageIndex = newIndex;
 
     // unbind load event from image first before bind it again
@@ -374,7 +373,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._registerImageLoadingEvent();
   }
 
-  private _hideImage() {
+  private _hideImage(): void {
     this._ui.showReloader = true;
     this._ui.showArrowNav = false;
     this._ui.showLeftArrow = false;
@@ -383,7 +382,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._ui.showCaption = false;
   }
 
-  private _updateNav() {
+  private _updateNav(): void {
     const alwaysShowNav = false;
 
     // check to see the browser support touch event
@@ -430,31 +429,31 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _showLeftArrowNav() {
+  private _showLeftArrowNav(): void {
     this._ui.showLeftArrow = true;
   }
 
-  private _showRightArrowNav() {
+  private _showRightArrowNav(): void {
     this._ui.showRightArrow = true;
   }
 
-  private _showArrowNav() {
+  private _showArrowNav(): void {
     this._ui.showArrowNav = true;
   }
 
-  private _enableKeyboardNav() {
+  private _enableKeyboardNav(): void {
     this._event.keyup = this._rendererRef.listenGlobal('document', 'keyup', event => {
       this._keyboardAction(event);
     });
   }
 
-  private _disableKeyboardNav() {
+  private _disableKeyboardNav(): void {
     if (this._event.keyup) {
       this._event.keyup();
     }
   }
 
-  private _keyboardAction($event: any) {
+  private _keyboardAction($event: any): void {
     const KEYCODE_LEFTARROW = 37;
     const KEYCODE_RIGHTARROW = 39;
     const keycode = $event.keyCode;
@@ -477,7 +476,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _getCssStyleValue(elem, propertyName) {
+  private _getCssStyleValue(elem, propertyName): void {
     return parseFloat(this._windowRef
       .getComputedStyle(elem.nativeElement, null)
       .getPropertyValue(propertyName));
