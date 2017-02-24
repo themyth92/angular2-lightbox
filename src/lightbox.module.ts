@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { Lightbox } from './lightbox.service';
-import { LightboxConfig } from './lightbox-config.service';
-import { LightboxOverlayComponent } from './lightbox-overlay.component';
 import { LightboxComponent } from './lightbox.component';
+import { LightboxConfig } from './lightbox-config.service';
+import { LightboxEvent } from './lightbox-event.service';
+import { LightboxOverlayComponent } from './lightbox-overlay.component';
 import { NgModule } from '@angular/core';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { NgModule } from '@angular/core';
   providers: [
     Lightbox,
     LightboxConfig,
+    LightboxEvent,
     { provide: 'Window', useValue: window }
   ],
   entryComponents: [ LightboxOverlayComponent, LightboxComponent ]

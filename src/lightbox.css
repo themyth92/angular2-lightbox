@@ -16,7 +16,6 @@ body.lb-disable-scrolling {
   background-color: black;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
-  display: none;
 }
 
 .lightbox {
@@ -222,6 +221,17 @@ body.lb-disable-scrolling {
   100% {opacity: 1;}
 }
 
+@keyframes fadeOut{    
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@-webkit-keyframes fadeOut{
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+
 @keyframes fadeInOverlay{    
   0% {opacity: 0;}
   100% {opacity: 0.8;}
@@ -232,6 +242,16 @@ body.lb-disable-scrolling {
   100% {opacity: 0.8;}
 }
 
+@keyframes fadeOutOverlay{    
+  0% {opacity: 0.8;}
+  100% {opacity: 0;}
+}
+
+@-webkit-keyframes fadeOutOverlay{
+  0% {opacity: 0.8;}
+  100% {opacity: 0;}
+}
+
 .fadeIn{
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn; 
@@ -240,6 +260,16 @@ body.lb-disable-scrolling {
 .fadeInOverlay{
   -webkit-animation-name: fadeInOverlay;
   animation-name: fadeInOverlay;
+}
+
+.fadeOut{
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+
+.fadeOutOverlay{
+  -webkit-animation-name: fadeOutOverlay;
+  animation-name: fadeOutOverlay;
 }
 
 .animation{

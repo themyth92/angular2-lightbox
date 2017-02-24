@@ -11,6 +11,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   template: `
@@ -37,10 +39,11 @@ import { DOCUMENT } from '@angular/platform-browser';
         </div>
       </div>
     </div>`,
-  selector: 'lb-content',
+  selector: '[lb-content]',
   host: {
     class: 'lightbox',
-    '(click)': 'close($event)'
+    '(click)': 'close($event)',
+    '[class]': '_ui.classList'
   }
 })
 export class LightboxComponent implements AfterViewInit, OnDestroy {
@@ -64,6 +67,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
+    private _lightboxEvent: LightboxEvent,
     @Inject('Window') private _windowRef: Window,
     @Inject(DOCUMENT) private _documentRef: DOCUMENT
   ) {
@@ -90,6 +94,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       // page number or not
       showPageNumber: false,
       showCaption: false,
+      classList: 'lightbox animation fadeIn';
     };
 
     this._content = {
@@ -98,6 +103,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
     this._event = {};
     this._lightboxElem = this._elemRef;
+    this._event.subscription = this._lightboxEvent.eventObs$.subscribe(event => this._onReceivedEvent(event));
   }
 
   public ngAfterViewInit(): void {
@@ -121,14 +127,25 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._end();
+    if (!this.options.disableKeyboardNav) {
+      // unbind keyboard event
+      this._disableKeyboardNav();
+    }
+
+    if (this._event.load) {
+      // unbind all the event
+      this._event.load();
+    }
+
+    this._event.subscription.unsubscribe();
   }
 
   public close($event: any): void {
+    $event.stopPropagation();
     if ($event.target.classList.contains('lightbox') ||
       $event.target.classList.contains('lb-loader') ||
       $event.target.classList.contains('lb-close')) {
-      // this._activeModalRef.close();
+      this._lightboxEvent.broadcastLightboxEvent(LIGHTBOX_EVENT.CLOSE);
     }
   }
 
@@ -306,6 +323,10 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     const resizeDuration = this.options.resizeDuration;
     const fadeDuration = this.options.fadeDuration;
 
+    this._rendererRef.setElementStyle(this._lightboxElem.nativeElement,
+      '-webkit-animation-duration', `${fadeDuration}s`);
+    this._rendererRef.setElementStyle(this._lightboxElem.nativeElement,
+      '-animation-duration', `${fadeDuration}s`);
     this._rendererRef.setElementStyle(this._outerContainerElem.nativeElement,
       '-webkit-transition-duration', `${resizeDuration}s`);
     this._rendererRef.setElementStyle(this._outerContainerElem.nativeElement,
@@ -329,15 +350,10 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _end(): void {
-    if (!this.options.disableKeyboardNav) {
-      // unbind keyboard event
-      this._disableKeyboardNav();
-    }
-
-    if (this._event.load) {
-      // unbind all the event
-      this._event.load();
-    }
+    this._ui.classList = 'lightbox animation fadeOut';
+    setTimeout(() => {
+      this.cmpRef.destroy();
+    }, this.options.fadeDuration * 1000);
   }
 
   private _updateDetails(): void {
@@ -476,9 +492,19 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _getCssStyleValue(elem, propertyName): void {
+  private _getCssStyleValue(elem, propertyName): number {
     return parseFloat(this._windowRef
       .getComputedStyle(elem.nativeElement, null)
       .getPropertyValue(propertyName));
+  },
+
+  private _onReceivedEvent(event: number): void {
+    switch (event) {
+      case LIGHTBOX_EVENT.CLOSE:
+        this._end();
+      break;
+      default:
+      break;
+    }
   }
 }

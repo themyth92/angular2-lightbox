@@ -27,10 +27,16 @@ export class Lightbox {
     const newOptions = {};
 
     Object.assign(newOptions, this._lightboxConfig, options);
+
+    // attach input to lightbox
     componentRef.instance.album = album;
     componentRef.instance.currentImageIndex = curIndex;
     componentRef.instance.options = newOptions;
+    componentRef.instance.cmpRef = componentRef;
+
+    // attach input to overlay
     overlayComponentRef.instance.options = newOptions;
+    overlayComponentRef.instance.cmpRef = overlayComponentRef;
     this._applicationRef.attachView(overlayComponentRef.hostView);
     this._applicationRef.attachView(componentRef.hostView);
     overlayComponentRef.onDestroy(() => {
