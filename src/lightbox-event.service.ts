@@ -13,10 +13,13 @@ export class LightboxEvent {
   public eventObs$: any;
   constructor() {
     this._eventSrc = new BehaviorSubject<number>(LIGHTBOX_EVENT.OPEN);
-    this.eventObs$ = this._eventSrc.asObservable()
+    this.eventObs$ = this._eventSrc.asObservable();
   }
 
   broadcastLightboxEvent(event): void {
     this._eventSrc.next(event);
+    if (event === LIGHTBOX_EVENT.CLOSE) {
+      this._eventSrc.next(LIGHTBOX_EVENT.OPEN);
+    }
   }
 }
