@@ -7,9 +7,10 @@ import {
   Injector
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { LightboxOverlayComponent } from './lightbox-overlay.component';
 import { LightboxComponent } from './lightbox.component';
 import { LightboxConfig } from './lightbox-config.service';
+import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { LightboxOverlayComponent } from './lightbox-overlay.component';
 
 @Injectable()
 export class Lightbox {
@@ -18,6 +19,7 @@ export class Lightbox {
     private _injector: Injector,
     private _applicationRef: ApplicationRef,
     private _lightboxConfig: LightboxConfig,
+    private _lightboxEvent: LightboxEvent,
     @Inject(DOCUMENT) private _documentRef: DOCUMENT
   ) {}
 
@@ -26,6 +28,8 @@ export class Lightbox {
     const componentRef = this._createComponent(LightboxComponent);
     const newOptions = {};
 
+    // broadcast open event
+    this._lightboxEvent.broadcastLightboxEvent(LIGHTBOX_EVENT.OPEN);
     Object.assign(newOptions, this._lightboxConfig, options);
 
     // attach input to lightbox
@@ -37,17 +41,23 @@ export class Lightbox {
     // attach input to overlay
     overlayComponentRef.instance.options = newOptions;
     overlayComponentRef.instance.cmpRef = overlayComponentRef;
-    this._applicationRef.attachView(overlayComponentRef.hostView);
-    this._applicationRef.attachView(componentRef.hostView);
-    overlayComponentRef.onDestroy(() => {
-      this._applicationRef.detachView(overlayComponentRef.hostView);
-    });
-    componentRef.onDestroy(() => {
-      this._applicationRef.detachView(componentRef.hostView);
-    });
 
-    this._documentRef.querySelector('body').appendChild(overlayComponentRef.location.nativeElement);
-    this._documentRef.querySelector('body').appendChild(componentRef.location.nativeElement);
+    // FIXME: not sure why last event is broadcasted (which is CLOSED) and make
+    // lightbox can not be opened the second time.
+    // Need to timeout so that the OPEN event is set before component is initialized
+    setTimeout(() => {
+      this._applicationRef.attachView(overlayComponentRef.hostView);
+      this._applicationRef.attachView(componentRef.hostView);
+      overlayComponentRef.onDestroy(() => {
+        this._applicationRef.detachView(overlayComponentRef.hostView);
+      });
+      componentRef.onDestroy(() => {
+        this._applicationRef.detachView(componentRef.hostView);
+      });
+
+      this._documentRef.querySelector('body').appendChild(overlayComponentRef.location.nativeElement);
+      this._documentRef.querySelector('body').appendChild(componentRef.location.nativeElement);
+    });
   }
 
   _createComponent(ComponentClass: any): ComponentRef {

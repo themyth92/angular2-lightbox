@@ -30,7 +30,7 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
     @Inject('Window') private _windowRef: Window,
   ) {
     this._classList = 'lightboxOverlay animation fadeInOverlay';
-    this._subscription = this._lightboxEvent.eventObs$.subscribe(event => this._onReceivedEvent(event));
+    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
   }
 
   public ngAfterViewInit(): void {
@@ -48,7 +48,7 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
 
   public close(): void {
     // broadcast to itself and all others subscriber including the components
-    this._lightboxEvent.broadcastLightboxEvent(LIGHTBOX_EVENT.CLOSE);
+    this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CLOSE, data: null });
   }
 
   public ngOnDestroy(): void {
@@ -56,7 +56,7 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
   }
 
   private _onReceivedEvent(event: number): void {
-    switch (event) {
+    switch (event.id) {
       case LIGHTBOX_EVENT.CLOSE:
         this._end();
       break;

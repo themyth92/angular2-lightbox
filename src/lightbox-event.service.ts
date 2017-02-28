@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 
 export enum LIGHTBOX_EVENT {
@@ -9,17 +9,14 @@ export enum LIGHTBOX_EVENT {
 
 @Injectable()
 export class LightboxEvent {
-  private _eventSrc: BehaviorSubject;
-  public eventObs$: any;
+  private _lightboxEventSource: Subject;
+  public lightboxEvent$: any;
   constructor() {
-    this._eventSrc = new BehaviorSubject<number>(LIGHTBOX_EVENT.OPEN);
-    this.eventObs$ = this._eventSrc.asObservable();
+    this._lightboxEventSource = new Subject<number>();
+    this.lightboxEvent$ = this._lightboxEventSource.asObservable();
   }
 
   broadcastLightboxEvent(event): void {
-    this._eventSrc.next(event);
-    if (event === LIGHTBOX_EVENT.CLOSE) {
-      this._eventSrc.next(LIGHTBOX_EVENT.OPEN);
-    }
+    this._lightboxEventSource.next(event);
   }
 }

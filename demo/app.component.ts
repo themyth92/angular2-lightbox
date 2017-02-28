@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { Lightbox } from 'lightbox';
+import { Lightbox, LightboxEvent, LIGHTBOX_EVENT } from 'lightbox';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'demo',
@@ -15,7 +16,7 @@ export class AppComponent {
   private _albums: Array<Object> = [];
   private _options: Object = {};
 
-  constructor(private _lightbox: Lightbox) {
+  constructor(private _lightbox: Lightbox, private _lightboxEvent: LightboxEvent) {
     for (let i = 1; i <= 4; i++) {
       const src = 'demo/img/image' + i + '.jpg';
       const caption = 'Image ' + i + ' caption here';
@@ -30,7 +31,14 @@ export class AppComponent {
     }
   }
 
-  open(index: number) {
+  open(index: number): void {
+    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
     this._lightbox.open(this._albums, index);
+  },
+
+  private _onReceivedEvent(event): void {
+    if (event.id === LIGHTBOX_EVENT.CLOSE) {
+      this._subscription.unsubscribe();
+    }
   }
 }

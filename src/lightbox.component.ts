@@ -41,7 +41,6 @@ import { Subscription } from 'rxjs/Subscription';
     </div>`,
   selector: '[lb-content]',
   host: {
-    class: 'lightbox',
     '(click)': 'close($event)',
     '[class]': '_ui.classList'
   }
@@ -103,7 +102,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
     this._event = {};
     this._lightboxElem = this._elemRef;
-    this._event.subscription = this._lightboxEvent.eventObs$.subscribe(event => this._onReceivedEvent(event));
+    this._event.subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
   }
 
   public ngAfterViewInit(): void {
@@ -145,7 +144,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     if ($event.target.classList.contains('lightbox') ||
       $event.target.classList.contains('lb-loader') ||
       $event.target.classList.contains('lb-close')) {
-      this._lightboxEvent.broadcastLightboxEvent(LIGHTBOX_EVENT.CLOSE);
+      this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CLOSE, data: null });
     }
   }
 
@@ -387,6 +386,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
     this._hideImage();
     this._registerImageLoadingEvent();
+    this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CHANGE_PAGE, data: newIndex });
   }
 
   private _hideImage(): void {
@@ -470,14 +470,15 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _keyboardAction($event: any): void {
+    const KEYCODE_ESC = 27;
     const KEYCODE_LEFTARROW = 37;
     const KEYCODE_RIGHTARROW = 39;
     const keycode = $event.keyCode;
     const key = String.fromCharCode(keycode).toLowerCase();
 
-    // no need to check for the esc key because
-    // it is handled by model directive
-    if (key === 'p' || keycode === KEYCODE_LEFTARROW) {
+    if (keycode === KEYCODE_ESC || key.match(/x|o|c/)) {
+      this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CLOSE, data: null });
+    } else if (key === 'p' || keycode === KEYCODE_LEFTARROW) {
       if (this.currentImageIndex !== 0) {
         this._changeImage(this.currentImageIndex - 1);
       } else if (this.options.wrapAround && this.album.length > 1) {
@@ -499,7 +500,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   },
 
   private _onReceivedEvent(event: number): void {
-    switch (event) {
+    switch (event.id) {
       case LIGHTBOX_EVENT.CLOSE:
         this._end();
       break;
