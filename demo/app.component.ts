@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Lightbox, LightboxEvent, LIGHTBOX_EVENT } from 'lightbox';
+import { Lightbox, LightboxConfig, LightboxEvent, LIGHTBOX_EVENT } from 'lightbox';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -16,7 +16,11 @@ export class AppComponent {
   private _albums: Array<Object> = [];
   private _options: Object = {};
 
-  constructor(private _lightbox: Lightbox, private _lightboxEvent: LightboxEvent) {
+  constructor(
+    private _lightbox: Lightbox,
+    private _lightboxEvent: LightboxEvent,
+    private _lighboxConfig: LightboxConfig
+  ) {
     for (let i = 1; i <= 4; i++) {
       const src = 'demo/img/image' + i + '.jpg';
       const caption = 'Image ' + i + ' caption here';
@@ -29,11 +33,16 @@ export class AppComponent {
 
       this._albums.push(album);
     }
+
+    // set default config
+    _lighboxConfig.fadeDuration = 1;
   }
 
   open(index: number): void {
     this._subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
-    this._lightbox.open(this._albums, index);
+
+    // override the default config
+    this._lightbox.open(this._albums, index, { wrapAround: true, showImageNumberLabel: true });
   },
 
   private _onReceivedEvent(event): void {

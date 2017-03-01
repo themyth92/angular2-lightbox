@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent } from './lightbox-event.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -46,9 +46,10 @@ import { Subscription } from 'rxjs/Subscription';
   }
 })
 export class LightboxComponent implements AfterViewInit, OnDestroy {
-  @Input() album: Array<Object>;
+  @Input() album: Array<IAlbum>;
   @Input() currentImageIndex: number;
-  @Input() options: Object;
+  @Input() options: any;
+  @Input() cmpRef: any;
   @ViewChild('outerContainer') _outerContainerElem: ElementRef;
   @ViewChild('container') _containerElem: ElementRef;
   @ViewChild('leftArrow') _leftArrowElem: ElementRef;
@@ -58,17 +59,17 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   @ViewChild('image') _imageElem: ElementRef;
   @ViewChild('caption') _captionElem: ElementRef;
   @ViewChild('number') _numberElem: ElementRef;
-  private _content: object;
-  private _ui: object;
-  private _cssValue: object;
-  private _content: object;
-  private _event: object;
+  private _content: any;
+  private _ui: any;
+  private _cssValue: any;
+  private _event: any;
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
     private _lightboxEvent: LightboxEvent,
+    public _lightboxElem: ElementRef,
     @Inject('Window') private _windowRef: Window,
-    @Inject(DOCUMENT) private _documentRef: DOCUMENT
+    @Inject(DOCUMENT) private _documentRef: any
   ) {
     // initialize data
     this.options = this.options || {};
@@ -93,7 +94,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       // page number or not
       showPageNumber: false,
       showCaption: false,
-      classList: 'lightbox animation fadeIn';
+      classList: 'lightbox animation fadeIn'
     };
 
     this._content = {
@@ -102,21 +103,22 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
     this._event = {};
     this._lightboxElem = this._elemRef;
-    this._event.subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
+    this._event.subscription = this._lightboxEvent.lightboxEvent$
+      .subscribe((event: IEvent) => this._onReceivedEvent(event));
   }
 
   public ngAfterViewInit(): void {
     // need to init css value here, after the view ready
     // actually these values are always 0
     this._cssValue = {
-      containerTopPadding: parseInt(this._getCssStyleValue(this._containerElem, 'padding-top'), 10),
-      containerRightPadding: parseInt(this._getCssStyleValue(this._containerElem, 'padding-right'), 10),
-      containerBottomPadding: parseInt(this._getCssStyleValue(this._containerElem, 'padding-bottom'), 10),
-      containerLeftPadding: parseInt(this._getCssStyleValue(this._containerElem, 'padding-left'), 10),
-      imageBorderWidthTop: parseInt(this._getCssStyleValue(this._imageElem, 'border-top-width'), 10),
-      imageBorderWidthBottom: parseInt(this._getCssStyleValue(this._imageElem, 'border-bottom-width'), 10),
-      imageBorderWidthLeft: parseInt(this._getCssStyleValue(this._imageElem, 'border-left-width'), 10),
-      imageBorderWidthRight: parseInt(this._getCssStyleValue(this._imageElem, 'border-right-width'), 10)
+      containerTopPadding: Math.round(this._getCssStyleValue(this._containerElem, 'padding-top')),
+      containerRightPadding: Math.round(this._getCssStyleValue(this._containerElem, 'padding-right')),
+      containerBottomPadding: Math.round(this._getCssStyleValue(this._containerElem, 'padding-bottom')),
+      containerLeftPadding: Math.round(this._getCssStyleValue(this._containerElem, 'padding-left')),
+      imageBorderWidthTop: Math.round(this._getCssStyleValue(this._imageElem, 'border-top-width')),
+      imageBorderWidthBottom: Math.round(this._getCssStyleValue(this._imageElem, 'border-bottom-width')),
+      imageBorderWidthLeft: Math.round(this._getCssStyleValue(this._imageElem, 'border-left-width')),
+      imageBorderWidthRight: Math.round(this._getCssStyleValue(this._imageElem, 'border-right-width'))
     };
 
     if (this._validateInputData()) {
@@ -174,7 +176,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
         if (this.album[i].src) {
           continue;
         }
- 
+
         throw new Error('One of the album data does not have source data');
       }
     } else {
@@ -233,10 +235,10 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       if (naturalImageWidth > maxImageWidth || naturalImageHeight > maxImageHeight) {
         if ((naturalImageWidth / maxImageWidth) > (naturalImageHeight / maxImageHeight)) {
           imageWidth = maxImageWidth;
-          imageHeight = parseInt(naturalImageHeight / (naturalImageWidth / imageWidth), 10);
+          imageHeight = Math.round(naturalImageHeight / (naturalImageWidth / imageWidth));
         } else {
           imageHeight = maxImageHeight;
-          imageWidth = parseInt(naturalImageWidth / (naturalImageHeight / imageHeight), 10);
+          imageWidth = Math.round(naturalImageWidth / (naturalImageHeight / imageHeight));
         }
       }
 
@@ -272,7 +274,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       });
     } else {
       this._postResize(newWidth, newHeight);
-    } 
+    }
   }
 
   private _postResize(newWidth: number, newHeight: number): void {
@@ -371,7 +373,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _albumLabel(): void {
+  private _albumLabel(): string {
     // due to {this.currentImageIndex} is set from 0 to {this.album.length} - 1
     return `Image ${Number(this.currentImageIndex + 1)} of ${this.album.length}`;
   }
@@ -399,7 +401,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _updateNav(): void {
-    const alwaysShowNav = false;
+    let alwaysShowNav = false;
 
     // check to see the browser support touch event
     try {
@@ -493,13 +495,13 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private _getCssStyleValue(elem, propertyName): number {
+  private _getCssStyleValue(elem: any, propertyName: string): number {
     return parseFloat(this._windowRef
       .getComputedStyle(elem.nativeElement, null)
       .getPropertyValue(propertyName));
-  },
+  }
 
-  private _onReceivedEvent(event: number): void {
+  private _onReceivedEvent(event: IEvent): void {
     switch (event.id) {
       case LIGHTBOX_EVENT.CLOSE:
         this._end();

@@ -2,14 +2,14 @@ import {
   ApplicationRef,
   ComponentFactoryResolver,
   ComponentRef,
-  Inject
+  Inject,
   Injectable,
   Injector
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LightboxComponent } from './lightbox.component';
 import { LightboxConfig } from './lightbox-config.service';
-import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { LightboxEvent, LIGHTBOX_EVENT, IAlbum } from './lightbox-event.service';
 import { LightboxOverlayComponent } from './lightbox-overlay.component';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class Lightbox {
     @Inject(DOCUMENT) private _documentRef: DOCUMENT
   ) {}
 
-  open(album: Array, curIndex: number = 0, options: Object = {}): Promise {
+  open(album: Array<IAlbum>, curIndex = 0, options: Object = {}): void {
     const overlayComponentRef = this._createComponent(LightboxOverlayComponent);
     const componentRef = this._createComponent(LightboxComponent);
     const newOptions = {};
@@ -60,7 +60,7 @@ export class Lightbox {
     });
   }
 
-  _createComponent(ComponentClass: any): ComponentRef {
+  _createComponent(ComponentClass: any): ComponentRef<any> {
     const factory = this._componentFactoryResolver.resolveComponentFactory(ComponentClass);
     const component = factory.create(this._injector);
 

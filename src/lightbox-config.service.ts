@@ -2,12 +2,22 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LightboxConfig {
-  fadeDuration: number = 0.7;
-  resizeDuration: number = 0.5;
-  fitImageInViewPort: boolean = true;
-  positionFromTop: number = 20;
-  showImageNumberLabel: boolean = false;
-  alwaysShowNavOnTouchDevices: boolean = false;
-  wrapAround: boolean = false;
-  disableKeyboardNav: boolean = false;
+  public fadeDuration: number;
+  public resizeDuration: number;
+  public fitImageInViewPort: boolean;
+  public positionFromTop: number;
+  public showImageNumberLabel: boolean;
+  public alwaysShowNavOnTouchDevices: boolean;
+  public wrapAround: boolean;
+  public disableKeyboardNav: boolean;
+  constructor() {
+    this.fadeDuration = 0.7;
+    this.resizeDuration = 0.5;
+    this.fitImageInViewPort = true;
+    this.positionFromTop = 20;
+    this.showImageNumberLabel = false;
+    this.alwaysShowNavOnTouchDevices = false;
+    this.wrapAround = false;
+    this.disableKeyboardNav = false;
+  }
 }

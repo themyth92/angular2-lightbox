@@ -8,7 +8,7 @@ import {
   Renderer
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { LightboxEvent, LIGHTBOX_EVENT, IEvent } from './lightbox-event.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -19,18 +19,20 @@ import { Subscription } from 'rxjs/Subscription';
     '[class]': '_classList'
   }
 })
-export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
+export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
   @Input() options;
   @Input() cmpRef;
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
     private _lightboxEvent: LightboxEvent,
-    @Inject(DOCUMENT) private _documentRef: DOCUMENT,
+    private _classList: string,
+    private _subscription: Subscription,
+    @Inject(DOCUMENT) private _documentRef: any,
     @Inject('Window') private _windowRef: Window,
   ) {
     this._classList = 'lightboxOverlay animation fadeInOverlay';
-    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
+    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe((event: IEvent) => this._onReceivedEvent(event));
   }
 
   public ngAfterViewInit(): void {
@@ -55,7 +57,7 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
     this._subscription.unsubscribe();
   }
 
-  private _onReceivedEvent(event: number): void {
+  private _onReceivedEvent(event: IEvent): void {
     switch (event.id) {
       case LIGHTBOX_EVENT.CLOSE:
         this._end();
@@ -82,7 +84,7 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
       this._documentRef.documentElement.clientWidth,
       this._documentRef.documentElement.scrollWidth,
       this._documentRef.documentElement.offsetWidth
-    ); 
+    );
   }
 
   private _getOverlayHeight(): number {
@@ -92,6 +94,6 @@ export class LightboxOverlayComponent implements AfterViewInit, NgOnDestroy {
       this._documentRef.documentElement.clientHeight,
       this._documentRef.documentElement.scrollHeight,
       this._documentRef.documentElement.offsetHeight
-    ); 
+    );
   }
 }

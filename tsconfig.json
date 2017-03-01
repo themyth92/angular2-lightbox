@@ -6,16 +6,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmitOnError": true,
-    "outDir": "temp",
-    "sourceMap": true,
-    "rootDir": "./demo",
-    "outDir": ""
+    "sourceMap": true
   },
   "compileOnSave": false,
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
-    "src",
-    "srcBK"
+    "**/*.spec.ts"
   ]
 }
