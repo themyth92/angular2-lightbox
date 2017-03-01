@@ -20,10 +20,10 @@ export class Lightbox {
     private _applicationRef: ApplicationRef,
     private _lightboxConfig: LightboxConfig,
     private _lightboxEvent: LightboxEvent,
-    @Inject(DOCUMENT) private _documentRef: DOCUMENT
+    @Inject(DOCUMENT) private _documentRef: any
   ) {}
 
-  open(album: Array<IAlbum>, curIndex = 0, options: Object = {}): void {
+  open(album: Array<IAlbum>, curIndex = 0, options = {}): void {
     const overlayComponentRef = this._createComponent(LightboxOverlayComponent);
     const componentRef = this._createComponent(LightboxComponent);
     const newOptions = {};

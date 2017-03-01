@@ -22,14 +22,14 @@ import { Subscription } from 'rxjs/Subscription';
 export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
   @Input() options;
   @Input() cmpRef;
+  private _subscription: Subscription;
+  private _classList: string;
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
     private _lightboxEvent: LightboxEvent,
-    private _classList: string,
-    private _subscription: Subscription,
     @Inject(DOCUMENT) private _documentRef: any,
-    @Inject('Window') private _windowRef: Window,
+    @Inject('Window') private _windowRef: Window
   ) {
     this._classList = 'lightboxOverlay animation fadeInOverlay';
     this._subscription = this._lightboxEvent.lightboxEvent$.subscribe((event: IEvent) => this._onReceivedEvent(event));
