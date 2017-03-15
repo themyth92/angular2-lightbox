@@ -10,6 +10,7 @@
   },
   "compileOnSave": false,
   "exclude": [
+    "demo",
     "node_modules"
   ]
 }
