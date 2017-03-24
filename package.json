@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "A port angular2 for lightbox2",
   "main": "index.js",
-  "dependencies": {
-    "ts-loader": "^2.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular/common": "^2.4.3",
     "@angular/compiler": "^2.4.3",

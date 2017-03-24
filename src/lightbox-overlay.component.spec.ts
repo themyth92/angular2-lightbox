@@ -1,14 +1,12 @@
-import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { LightboxEvent } from './lightbox-event.service';
+import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
 import { LightboxOverlayComponent } from './lightbox-overlay.component';
 
 describe('[ Unit - LightboxOverlayComponent ]', () => {
   let fixture: ComponentFixture<LightboxOverlayComponent>;
   let lightboxEvent: LightboxEvent;
   let mockData: any;
-  let windowMock: any;
 
   beforeEach(() => {
     mockData = {
@@ -20,21 +18,19 @@ describe('[ Unit - LightboxOverlayComponent ]', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LightboxOverlayComponent],
-      providers: [
-        LightboxEvent,
-        { provide: 'Window', useValue: windowMock }
-      ]
+      declarations: [ LightboxOverlayComponent ],
+      providers: [ LightboxEvent ]
     });
 
     fixture = TestBed.createComponent(LightboxOverlayComponent);
 
-    // mock options
+    // mock options and ref
     fixture.componentInstance.options = mockData.options;
+    fixture.componentInstance.cmpRef = { destroy: jasmine.createSpy('spy') };
     fixture.detectChanges();
   });
 
-  beforeEach(inject([LightboxEvent], (lEvent: LightboxEvent) => {
+  beforeEach(inject([ LightboxEvent ], (lEvent: LightboxEvent) => {
     lightboxEvent = lEvent;
   }));
 
@@ -42,5 +38,26 @@ describe('[ Unit - LightboxOverlayComponent ]', () => {
     expect(fixture.nativeElement.getAttribute('class')).toContain('lightboxOverlay animation fadeInOverlay');
     expect(fixture.nativeElement.getAttribute('style'))
       .toMatch(new RegExp(`animation.*${mockData.options.fadeDuration}s`));
+  });
+
+  describe('{ method: close }', () => {
+    it('should self destroy and broadcast event when component is closed', fakeAsync(() => {
+      spyOn(lightboxEvent, 'broadcastLightboxEvent').and.callThrough();
+      fixture.componentInstance.close();
+      expect(lightboxEvent.broadcastLightboxEvent).toHaveBeenCalledWith({ id: LIGHTBOX_EVENT.CLOSE, data: null });
+      tick();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.getAttribute('class')).toContain('lightboxOverlay animation fadeOutOverlay');
+      tick(mockData.options.fadeDuration * 1000 + 1);
+      expect(fixture.componentInstance.cmpRef.destroy).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('{ method: ngOnDestroy }', () => {
+    it('should unsubscribe event when destroy is called', () => {
+      spyOn(fixture.componentInstance['_subscription'], 'unsubscribe').and.callFake(() => {});
+      fixture.componentInstance.ngOnDestroy();
+      expect(fixture.componentInstance['_subscription'].unsubscribe).toHaveBeenCalledTimes(1);
+    });
   });
 });

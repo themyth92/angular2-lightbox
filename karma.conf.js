@@ -6,9 +6,10 @@ module.exports = config => {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
+      { pattern: './src/img/*.png', watched: false, included: false, served: true, nocache: false },
       { pattern: './karma-main.js', watched: false }
     ],
-    reporters: ['progress'],
+    reporters: ['dots'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -56,6 +57,9 @@ module.exports = config => {
     },
     webpackServer: {
       noInfo: true
+    },
+    proxies: {
+      '/src/img/': '/base/src/img/'
     }
   });
 };
