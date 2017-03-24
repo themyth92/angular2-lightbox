@@ -10,7 +10,7 @@ before_script:
   - yarn
 script:
   - npm test
-after_success
+after_success:
   - sshpass -p "$PWD" scp -r $USER@$DOMAIN:$FOLDER_PATH *
 branches:
   only:
