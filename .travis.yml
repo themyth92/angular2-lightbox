@@ -11,7 +11,7 @@ before_script:
 script:
   - npm test
 after_success:
-  - sshpass -p "$PWD" scp -r $USER@$DOMAIN:$FOLDER_PATH *
+  - sshpass -p "$PASS" rsync -av ./ $USER@$DOMAIN:$FOLDER_PATH
 branches:
   only:
     - master
