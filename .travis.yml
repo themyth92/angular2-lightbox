@@ -11,7 +11,10 @@ before_script:
 script:
   - npm test
 after_success:
-  - sshpass -p "$PASS" rsync -av ./ $USER@$DOMAIN:$FOLDER_PATH
+  - ssh-keyscan $DOMAIN > ~/.ssh/known_hosts
+  - sshpass -p "$PASS" rsync -arv --exclude=.git ./ $USER@$DOMAIN:$FOLDER_PATH
 branches:
   only:
     - master
+notifications:
+  email: false
