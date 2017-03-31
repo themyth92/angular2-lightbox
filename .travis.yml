@@ -12,7 +12,7 @@ script:
   - npm test
 after_success:
   - ssh-keyscan $DOMAIN > ~/.ssh/known_hosts
-  - sshpass -p "$PASS" rsync -arv --exclude=.git ./ $USER@$DOMAIN:$FOLDER_PATH
+  - sshpass -p "$PASS" rsync -ar --stats --exclude=.git ./ $USER@$DOMAIN:$FOLDER_PATH
 branches:
   only:
     - master
