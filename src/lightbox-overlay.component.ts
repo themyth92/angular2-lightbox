@@ -20,8 +20,8 @@ import { Subscription } from 'rxjs/Subscription';
   }
 })
 export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
-  @Input() options;
-  @Input() cmpRef;
+  @Input() options: any;
+  @Input() cmpRef: any;
   private _subscription: Subscription;
   private _classList: string;
   constructor(

@@ -68,7 +68,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     private _rendererRef: Renderer,
     private _lightboxEvent: LightboxEvent,
     public _lightboxElem: ElementRef,
-    @Inject('Window') private _windowRef: Window,
+    @Inject('Window') private _windowRef: any,
     @Inject(DOCUMENT) private _documentRef: any
   ) {
     // initialize data
@@ -265,7 +265,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       this._event.transitions = [];
       ['transitionend', 'webkitTransitionEnd', 'oTransitionEnd', 'MSTransitionEnd'].forEach(eventName => {
         this._event.transitions.push(
-          this._rendererRef.listen(this._outerContainerElem.nativeElement, eventName, event => {
+          this._rendererRef.listen(this._outerContainerElem.nativeElement, eventName, (event: any) => {
             if (event.target === event.currentTarget) {
               this._postResize(newWidth, newHeight);
             }
@@ -280,7 +280,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   private _postResize(newWidth: number, newHeight: number): void {
     // unbind resize event
     if (Array.isArray(this._event.transitions)) {
-      this._event.transitions.forEach(eventHandler => {
+      this._event.transitions.forEach((eventHandler: any) => {
         eventHandler();
       });
 
@@ -460,7 +460,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _enableKeyboardNav(): void {
-    this._event.keyup = this._rendererRef.listenGlobal('document', 'keyup', event => {
+    this._event.keyup = this._rendererRef.listenGlobal('document', 'keyup', (event: any) => {
       this._keyboardAction(event);
     });
   }

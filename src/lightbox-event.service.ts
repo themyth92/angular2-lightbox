@@ -28,7 +28,7 @@ export class LightboxEvent {
     this.lightboxEvent$ = this._lightboxEventSource.asObservable();
   }
 
-  broadcastLightboxEvent(event): void {
+  broadcastLightboxEvent(event: any): void {
     this._lightboxEventSource.next(event);
   }
 }
