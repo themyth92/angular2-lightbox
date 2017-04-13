@@ -94,6 +94,10 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+angular2-lightbox@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/angular2-lightbox/-/angular2-lightbox-1.0.0.tgz#ae14249b87be1a82dc934c0fab5de38e8201366e"
+
 ansi-regex@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
