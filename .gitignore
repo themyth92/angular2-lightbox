@@ -6,3 +6,5 @@ src/*.js
 *.js
 /img
 *.metadata
+*.css
+*.log
