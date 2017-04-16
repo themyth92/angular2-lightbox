@@ -130,6 +130,7 @@ export class AppComponent {
 ## Lightbox options
 
 Available options based on lightbox2 options
+
 Properties | Default | Description
 -----------|---------|------------
 fadeDuration | **0.7** seconds | *duration* starting when the **src** image is **loaded** to **fully appear** onto screen.
