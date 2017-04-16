@@ -12,6 +12,10 @@
   "exclude": [
     "demo",
     "node_modules",
-    "aot"
-  ]
+    "compiled"
+  ],
+  "angularCompilerOptions": {
+    "skipMetadataEmit": true,
+    "genDir": "compiled"
+  }
 }

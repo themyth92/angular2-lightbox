@@ -1,11 +1,45 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="./src/lightbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
+    <link rel="stylesheet" href="./demo/app.css">
+    <link rel="stylesheet" href="./node_modules/angular2-lightbox/lightbox.css">
   </head>
   <body>
-    <demo></demo>
+    <nav class="nav has-shadow" id="top">
+      <div class="container">
+        <div class="nav-left">
+          <a class="nav-item" href="index.html">
+            <p>themyth92</p>
+          </a>
+        </div>
+        <div class="nav-right nav-menu">
+          <a class="nav-item" href="https://github.com/themyth92/angular2-lightbox">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="title">Gallery</div>
+          </div>
+        </div>
+        <hr>
+        <demo></demo>
+      </div>
+    </div>
+    <div class="github-fork-ribbon-wrapper right-bottom">
+      <div class="github-fork-ribbon">
+        <a href="https://github.com/themyth92/angular2-lightbox">Fork me on GitHub</a>
+      </div>
+    </div>
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>

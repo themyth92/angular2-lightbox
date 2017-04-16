@@ -4,7 +4,8 @@
   "description": "A port angular2 for lightbox2",
   "main": "index.js",
   "dependencies": {
-    "angular2-lightbox": "^1.0.0"
+    "angular2-lightbox": "^1.0.0",
+    "copyfiles": "^1.2.0"
   },
   "devDependencies": {
     "@angular/common": "^2.4.3",
@@ -32,7 +33,8 @@
     "zone.js": "^0.7.4"
   },
   "scripts": {
-    "test": "./node_modules/tslint/bin/tslint -c tslint.json src/*.ts && ./node_modules/karma/bin/karma start"
+    "test": "./node_modules/tslint/bin/tslint -c tslint.json src/*.ts && ./node_modules/karma/bin/karma start",
+    "prepublish": "./node_modules/.bin/ngc && ./node_modules/.bin/copyfiles -u 1 src/img/* src/*.js src/*.js.map src/*.metadata.json src/*.css ."
   },
   "repository": {
     "type": "git",

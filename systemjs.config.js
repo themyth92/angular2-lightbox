@@ -22,7 +22,7 @@
       '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
-      lightbox: 'npm:angular2-lightbox/src',
+      'angular2-lightbox': 'npm:angular2-lightbox',
       rxjs: 'npm:rxjs'
     },
 
@@ -34,7 +34,7 @@
       rxjs: {
         defaultExtension: 'js'
       },
-      lightbox: {
+      'angular2-lightbox': {
         main: './index.js',
         defaultExtension: 'js'
       }

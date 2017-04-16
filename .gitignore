@@ -1,4 +1,8 @@
 node_modules
 src/*.map
 src/*.js
-aot
+/compiled
+*.map
+*.js
+/img
+*.metadata

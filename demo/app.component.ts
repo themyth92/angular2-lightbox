@@ -1,16 +1,19 @@
 import { Component, Inject } from '@angular/core';
-import { Lightbox, LightboxConfig, LightboxEvent, LIGHTBOX_EVENT, IEvent, IAlbum } from 'lightbox';
+import { Lightbox, LightboxConfig, LightboxEvent, LIGHTBOX_EVENT, IEvent, IAlbum } from 'angular2-lightbox';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'demo',
   template: `
-    <div class="row text-center">
-      <div *ngFor="let image of _albums; let i=index" class="img-row">
-        <img class="img-responsive img-frame" [src]="image.thumb" (click)="open(i)"/>
+    <div class="column has-text-centered">
+      <div class="img-row" *ngFor="let image of _albums; let i=index">
+        <img class="img-frame" [src]="image.thumb" (click)="open(i)"/>
       </div>
     </div>
-  `
+  `,
+  host: {
+    class: 'columns'
+  }
 })
 export class AppComponent {
   private _albums: Array<IAlbum>;
