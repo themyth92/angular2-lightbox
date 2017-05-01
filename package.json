@@ -1,10 +1,10 @@
 {
   "name": "angular2-lightbox",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A port angular2 for lightbox2",
   "main": "index.js",
   "dependencies": {
-    "angular2-lightbox": "^1.0.3"
+    "angular2-lightbox": "^1.1.0"
   },
   "devDependencies": {
     "@angular/common": "^2.4.3",
