@@ -151,7 +151,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   public nextImage(): void {
-    if (this.currentImageIndex === this.album.length - 1) {
+    if (this.album.length === 1) {
+      return;
+    } else if (this.currentImageIndex === this.album.length - 1) {
       this._changeImage(0);
     } else {
       this._changeImage(this.currentImageIndex + 1);
@@ -159,7 +161,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   public prevImage(): void {
-    if (this.currentImageIndex === 0) {
+    if (this.album.length === 1) {
+      return;
+    } else if (this.currentImageIndex === 0 && this.album.length > 1) {
       this._changeImage(this.album.length - 1);
     } else {
       this._changeImage(this.currentImageIndex - 1);
@@ -456,7 +460,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _showArrowNav(): void {
-    this._ui.showArrowNav = true;
+    this._ui.showArrowNav = (this.album.length !== 1);
   }
 
   private _enableKeyboardNav(): void {
