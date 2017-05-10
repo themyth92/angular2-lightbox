@@ -7,13 +7,12 @@
     "angular2-lightbox": "^1.1.0"
   },
   "devDependencies": {
-    "@angular/common": "^2.4.3",
-    "@angular/compiler": "^2.4.3",
-    "@angular/compiler-cli": "^4.0.1",
-    "@angular/core": "^2.4.3",
-    "@angular/forms": "^2.4.3",
-    "@angular/platform-browser": "^2.4.3",
-    "@angular/platform-browser-dynamic": "^2.4.3",
+    "@angular/common": "^4.1.0",
+    "@angular/compiler": "^4.1.0",
+    "@angular/compiler-cli": "^4.1.0",
+    "@angular/core": "^4.1.0",
+    "@angular/platform-browser": "^4.1.0",
+    "@angular/platform-browser-dynamic": "^4.1.0",
     "@types/jasmine": "^2.5.44",
     "awesome-typescript-loader": "^3.1.2",
     "copyfiles": "^1.2.0",
@@ -30,7 +29,7 @@
     "tslint": "^5.1.0",
     "typescript": "^2.2.1",
     "webpack": "^2.2.1",
-    "zone.js": "^0.7.4"
+    "zone.js": "^0.8.9"
   },
   "scripts": {
     "test": "./node_modules/tslint/bin/tslint -c tslint.json src/*.ts && ./node_modules/karma/bin/karma start",
