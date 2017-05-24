@@ -5,6 +5,6 @@ src/*.js
 *.map
 *.js
 /img
-*.metadata
+*.metadata.json
 *.css
 *.log

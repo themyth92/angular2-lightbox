@@ -49,7 +49,7 @@ describe('[ Unit - LightboxComponent ]', () => {
   }));
 
   it('should initialize component with correct styling and default value', () => {
-    expect(fixture.componentInstance['_ui']).toEqual({
+    expect(fixture.componentInstance.ui).toEqual({
       showReloader: true,
       showLeftArrow: false,
       showRightArrow: false,
@@ -58,7 +58,7 @@ describe('[ Unit - LightboxComponent ]', () => {
       showCaption: false,
       classList: 'lightbox animation fadeIn'
     });
-    expect(fixture.componentInstance['_content']).toEqual({ pageNumber: '' });
+    expect(fixture.componentInstance.content).toEqual({ pageNumber: '' });
     expect(fixture.componentInstance.album).toEqual(mockData.album);
     expect(fixture.componentInstance.options).toEqual(mockData.options);
     expect(fixture.componentInstance.currentImageIndex).toEqual(mockData.currentIndex);
@@ -108,7 +108,7 @@ describe('[ Unit - LightboxComponent ]', () => {
       fixture.componentInstance['_event'].load = jasmine.createSpy('load');
       spyOn(lightboxEvent, 'broadcastLightboxEvent');
       fixture.componentInstance.nextImage();
-      expect(fixture.componentInstance['_ui']).toEqual({
+      expect(fixture.componentInstance.ui).toEqual({
         showReloader: true,
         showLeftArrow: false,
         showRightArrow: false,
@@ -125,7 +125,7 @@ describe('[ Unit - LightboxComponent ]', () => {
       fixture.componentInstance['_event'].load = jasmine.createSpy('load');
       spyOn(lightboxEvent, 'broadcastLightboxEvent');
       fixture.componentInstance.nextImage();
-      expect(fixture.componentInstance['_ui']).toEqual({
+      expect(fixture.componentInstance.ui).toEqual({
         showReloader: true,
         showLeftArrow: false,
         showRightArrow: false,
@@ -144,7 +144,7 @@ describe('[ Unit - LightboxComponent ]', () => {
       fixture.componentInstance['_event'].load = jasmine.createSpy('load');
       spyOn(lightboxEvent, 'broadcastLightboxEvent');
       fixture.componentInstance.prevImage();
-      expect(fixture.componentInstance['_ui']).toEqual({
+      expect(fixture.componentInstance.ui).toEqual({
         showReloader: true,
         showLeftArrow: false,
         showRightArrow: false,
@@ -163,7 +163,7 @@ describe('[ Unit - LightboxComponent ]', () => {
       fixture.componentInstance['_event'].load = jasmine.createSpy('load');
       spyOn(lightboxEvent, 'broadcastLightboxEvent');
       fixture.componentInstance.nextImage();
-      expect(fixture.componentInstance['_ui']).toEqual({
+      expect(fixture.componentInstance.ui).toEqual({
         showReloader: true,
         showLeftArrow: false,
         showRightArrow: false,

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES5",
     "lib": ["es2015", "dom"],
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmitOnError": true,
@@ -15,7 +16,6 @@
     "compiled"
   ],
   "angularCompilerOptions": {
-    "skipMetadataEmit": true,
     "genDir": "compiled"
   }
 }
