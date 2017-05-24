@@ -1,10 +1,10 @@
 {
   "name": "angular2-lightbox",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A port angular2 for lightbox2",
   "main": "index.js",
   "dependencies": {
-    "angular2-lightbox": "^1.1.0"
+    "angular2-lightbox": "^1.1.2"
   },
   "devDependencies": {
     "@angular/common": "^4.1.0",
@@ -33,7 +33,7 @@
   },
   "scripts": {
     "test": "./node_modules/tslint/bin/tslint -c tslint.json src/*.ts && ./node_modules/karma/bin/karma start",
-    "prepublish": "./node_modules/.bin/ngc && ./node_modules/.bin/copyfiles -u 1 src/img/* src/*.js src/*.js.map src/*.metadata.json src/*.css ."
+    "prepublish": "./node_modules/.bin/ngc && ./node_modules/.bin/copyfiles -u 1 src/img/* src/*.js src/*.js.map src/*.ts src/*.metadata.json src/*.css ."
   },
   "repository": {
     "type": "git",
