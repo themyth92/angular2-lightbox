@@ -18,21 +18,21 @@ import { Subscription } from 'rxjs/Subscription';
   template: `
     <div class="lb-outerContainer transition" #outerContainer>
       <div class="lb-container" #container>
-        <img class="lb-image" [src]="album[currentImageIndex].src" class="lb-image animation fadeIn" [hidden]="_ui.showReloader" #image>
-        <div class="lb-nav" [hidden]="!_ui.showArrowNav" #navArrow>
-          <a class="lb-prev" [hidden]="!_ui.showLeftArrow" (click)="prevImage()" #leftArrow></a>
-          <a class="lb-next"[hidden]="!_ui.showRightArrow" (click)="nextImage()" #rightArrow></a>
+        <img class="lb-image" [src]="album[currentImageIndex].src" class="lb-image animation fadeIn" [hidden]="ui.showReloader" #image>
+        <div class="lb-nav" [hidden]="!ui.showArrowNav" #navArrow>
+          <a class="lb-prev" [hidden]="!ui.showLeftArrow" (click)="prevImage()" #leftArrow></a>
+          <a class="lb-next"[hidden]="!ui.showRightArrow" (click)="nextImage()" #rightArrow></a>
         </div>
-        <div class="lb-loader" [hidden]="!_ui.showReloader" (click)="close($event)">
+        <div class="lb-loader" [hidden]="!ui.showReloader" (click)="close($event)">
           <a class="lb-cancel"></a>
         </div>
       </div>
     </div>
-    <div class="lb-dataContainer" [hidden]="_ui.showReloader" #dataContainer>
+    <div class="lb-dataContainer" [hidden]="ui.showReloader" #dataContainer>
       <div class="lb-data">
         <div class="lb-details">
-          <span class="lb-caption animation fadeIn" [hidden]="!_ui.showCaption" #caption>{{ album[currentImageIndex].caption }}</span>
-          <span class="lb-number animation fadeIn" [hidden]="!_ui.showPageNumber" #number>{{ _content.pageNumber }}</span>
+          <span class="lb-caption animation fadeIn" [hidden]="!ui.showCaption" #caption>{{ album[currentImageIndex].caption }}</span>
+          <span class="lb-number animation fadeIn" [hidden]="!ui.showPageNumber" #number>{{ content.pageNumber }}</span>
         </div>
         <div class="lb-closeContainer">
           <a class="lb-close" (click)="close($event)"></a>
@@ -42,7 +42,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: '[lb-content]',
   host: {
     '(click)': 'close($event)',
-    '[class]': '_ui.classList'
+    '[class]': 'ui.classList'
   }
 })
 export class LightboxComponent implements AfterViewInit, OnDestroy {
@@ -59,8 +59,8 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   @ViewChild('image') _imageElem: ElementRef;
   @ViewChild('caption') _captionElem: ElementRef;
   @ViewChild('number') _numberElem: ElementRef;
-  private _content: any;
-  private _ui: any;
+  public content: any;
+  public ui: any;
   private _cssValue: any;
   private _event: any;
   constructor(
@@ -77,7 +77,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this.currentImageIndex = this.currentImageIndex || null;
 
     // control the interactive of the directive
-    this._ui = {
+    this.ui = {
       // control the appear of the reloader
       // false: image has loaded completely and ready to be shown
       // true: image is still loading
@@ -97,7 +97,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       classList: 'lightbox animation fadeIn'
     };
 
-    this._content = {
+    this.content = {
       pageNumber: ''
     };
 
@@ -296,7 +296,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _showImage(): void {
-    this._ui.showReloader = false;
+    this.ui.showReloader = false;
     this._updateNav();
     this._updateDetails();
     if (!this.options.disableKeyboardNav) {
@@ -355,7 +355,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _end(): void {
-    this._ui.classList = 'lightbox animation fadeOut';
+    this.ui.classList = 'lightbox animation fadeOut';
     setTimeout(() => {
       this.cmpRef.destroy();
     }, this.options.fadeDuration * 1000);
@@ -365,15 +365,15 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     // update the caption
     if (typeof this.album[this.currentImageIndex].caption !== 'undefined' &&
       this.album[this.currentImageIndex].caption !== '') {
-      this._ui.showCaption = true;
+      this.ui.showCaption = true;
     }
 
     // update the page number if user choose to do so
     // does not perform numbering the page if the
     // array length in album <= 1
     if (this.album.length > 1 && this.options.showImageNumberLabel) {
-      this._ui.showPageNumber = true;
-      this._content.pageNumber = this._albumLabel();
+      this.ui.showPageNumber = true;
+      this.content.pageNumber = this._albumLabel();
     }
   }
 
@@ -396,12 +396,12 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _hideImage(): void {
-    this._ui.showReloader = true;
-    this._ui.showArrowNav = false;
-    this._ui.showLeftArrow = false;
-    this._ui.showRightArrow = false;
-    this._ui.showPageNumber = false;
-    this._ui.showCaption = false;
+    this.ui.showReloader = true;
+    this.ui.showArrowNav = false;
+    this.ui.showLeftArrow = false;
+    this.ui.showRightArrow = false;
+    this.ui.showPageNumber = false;
+    this.ui.showCaption = false;
   }
 
   private _updateNav(): void {
@@ -452,15 +452,15 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _showLeftArrowNav(): void {
-    this._ui.showLeftArrow = true;
+    this.ui.showLeftArrow = true;
   }
 
   private _showRightArrowNav(): void {
-    this._ui.showRightArrow = true;
+    this.ui.showRightArrow = true;
   }
 
   private _showArrowNav(): void {
-    this._ui.showArrowNav = (this.album.length !== 1);
+    this.ui.showArrowNav = (this.album.length !== 1);
   }
 
   private _enableKeyboardNav(): void {
