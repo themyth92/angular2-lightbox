@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent } from './lightbox-event.service';
+import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent, LightboxWindowRef } from './lightbox-event.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -63,18 +63,20 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   public ui: any;
   private _cssValue: any;
   private _event: any;
+  private _windowRef: any;
   constructor(
     private _elemRef: ElementRef,
     private _rendererRef: Renderer,
     private _lightboxEvent: LightboxEvent,
     public _lightboxElem: ElementRef,
-    @Inject('Window') private _windowRef: any,
+    private _lightboxWindowRef: LightboxWindowRef,
     @Inject(DOCUMENT) private _documentRef: any
   ) {
     // initialize data
     this.options = this.options || {};
     this.album = this.album || [];
     this.currentImageIndex = this.currentImageIndex || null;
+    this._windowRef = this._lightboxWindowRef.nativeWindow;
 
     // control the interactive of the directive
     this.ui = {

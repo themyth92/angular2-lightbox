@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { LightboxEvent, LIGHTBOX_EVENT } from './lightbox-event.service';
+import { LightboxEvent, LightboxWindowRef, LIGHTBOX_EVENT } from './lightbox-event.service';
 import { LightboxComponent } from './lightbox.component';
 
 describe('[ Unit - LightboxComponent ]', () => {
@@ -36,10 +36,7 @@ describe('[ Unit - LightboxComponent ]', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ LightboxComponent ],
-      providers: [
-        LightboxEvent,
-        { provide: 'Window', useValue: window }
-      ]
+      providers: [ LightboxEvent, LightboxWindowRef ]
     });
     createComponent();
   });
