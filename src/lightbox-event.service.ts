@@ -32,3 +32,14 @@ export class LightboxEvent {
     this._lightboxEventSource.next(event);
   }
 }
+
+function getWindow (): any {
+  return window;
+}
+
+@Injectable()
+export class LightboxWindowRef {
+  get nativeWindow (): any {
+    return getWindow();
+  }
+}
