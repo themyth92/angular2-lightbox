@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   Inject,
   Input,
   OnDestroy,
@@ -35,16 +36,13 @@ export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
-    const width = this._getOverlayWidth();
-    const height = this._getOverlayHeight();
     const fadeDuration = this.options.fadeDuration;
 
-    this._rendererRef.setElementStyle(this._elemRef.nativeElement, 'width', `${width}px`);
-    this._rendererRef.setElementStyle(this._elemRef.nativeElement, 'height', `${height}px`);
     this._rendererRef.setElementStyle(this._elemRef.nativeElement,
       '-webkit-animation-duration', `${fadeDuration}s`);
     this._rendererRef.setElementStyle(this._elemRef.nativeElement,
       '-animation-duration', `${fadeDuration}s`);
+    this._sizeOverlay();
   }
 
   public close(): void {
@@ -52,8 +50,21 @@ export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
     this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CLOSE, data: null });
   }
 
+  @HostListener('window:resize')
+  public onResize(): void {
+    this._sizeOverlay();
+  }
+
   public ngOnDestroy(): void {
     this._subscription.unsubscribe();
+  }
+
+  private _sizeOverlay(): void {
+    const width = this._getOverlayWidth();
+    const height = this._getOverlayHeight();
+
+    this._rendererRef.setElementStyle(this._elemRef.nativeElement, 'width', `${width}px`);
+    this._rendererRef.setElementStyle(this._elemRef.nativeElement, 'height', `${height}px`);
   }
 
   private _onReceivedEvent(event: IEvent): void {
