@@ -72,7 +72,6 @@ describe('[ Unit - LightboxComponent ]', () => {
       fixture.componentInstance.options.disableKeyboardNav = false;
       fixture.componentInstance.ngOnDestroy();
       expect(fixture.componentInstance['_event'].keyup).toHaveBeenCalledTimes(1);
-      expect(fixture.componentInstance['_event'].load).toHaveBeenCalledTimes(1);
       expect(fixture.componentInstance['_event'].subscription.unsubscribe).toHaveBeenCalledTimes(1);
     });
 
