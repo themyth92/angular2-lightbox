@@ -44,7 +44,7 @@ export class AppComponent {
   }
 
   open(index: number): void {
-    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe(event => this._onReceivedEvent(event));
+    this._subscription = this._lightboxEvent.lightboxEvent$.subscribe((event: IEvent) => this._onReceivedEvent(event));
 
     // override the default config
     this._lightbox.open(this._albums, index, { wrapAround: true, showImageNumberLabel: true });

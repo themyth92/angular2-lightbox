@@ -135,11 +135,6 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       this._disableKeyboardNav();
     }
 
-    if (this._event.load) {
-      // unbind all the event
-      this._event.load();
-    }
-
     this._event.subscription.unsubscribe();
   }
 
@@ -201,11 +196,12 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _registerImageLoadingEvent(): void {
-    // start to register the event and
-    // be ready for callback
-    this._event.load = this._rendererRef.listen(this._imageElem.nativeElement, 'load', () => {
+    const preloader = new Image();
+
+    preloader.onload = () => {
       this._onLoadImageSuccess();
-    });
+    }
+    preloader.src = this.album[this.currentImageIndex].src;
   }
 
   /**
@@ -386,12 +382,6 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
   private _changeImage(newIndex: number): void {
     this.currentImageIndex = newIndex;
-
-    // unbind load event from image first before bind it again
-    if (this._event.load) {
-      this._event.load();
-    }
-
     this._hideImage();
     this._registerImageLoadingEvent();
     this._lightboxEvent.broadcastLightboxEvent({ id: LIGHTBOX_EVENT.CHANGE_PAGE, data: newIndex });
