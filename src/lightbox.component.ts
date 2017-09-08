@@ -311,12 +311,19 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _positionLightBox(): void {
-    const top = this.options.positionFromTop;
-    const left = 0;
+    // @see https://stackoverflow.com/questions/3464876/javascript-get-window-x-y-position-for-scroll
+    const top = (this._windowRef.pageYOffset || this._documentRef.documentElement.scrollTop) +
+      this.options.positionFromTop;
+    const left = this._windowRef.pageXOffset || this._documentRef.documentElement.scrollLeft;
 
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${top}px`);
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'left', `${left}px`);
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'display', 'block');
+
+    // disable scrolling of the page while open
+    if (this.options.disableScrolling) {
+      this._rendererRef.setElementClass(this._documentRef.body, 'lb-disable-scrolling', true);
+    }
   }
 
   /**
@@ -354,6 +361,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
 
   private _end(): void {
     this.ui.classList = 'lightbox animation fadeOut';
+    if (this.options.disableScrolling) {
+      this._rendererRef.setElementClass(this._documentRef.body, 'lb-disable-scrolling', false);
+    }
     setTimeout(() => {
       this.cmpRef.destroy();
     }, this.options.fadeDuration * 1000);

@@ -141,6 +141,7 @@ showImageNumberLabel | **false** | Determine whether to show the image number to
 alwaysShowNavOnTouchDevices | **false** | Determine whether to show `left/right` arrow to user on Touch devices.
 wrapAround | **false** | Determine whether to move to the start of the album when user reaches the end of album and vice versa. Set it to **true** to enable this feature.
 disableKeyboardNav | **false** | Determine whether to disable navigation using keyboard event.
+disableScrolling | **false** | If **true**, prevent the page from scrolling while Lightbox is open. This works by settings overflow hidden on the body.
 
 **NOTE**: You can either override default config or during a specific opening window
 1. Override default config

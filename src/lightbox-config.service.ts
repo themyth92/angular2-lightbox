@@ -10,6 +10,7 @@ export class LightboxConfig {
   public alwaysShowNavOnTouchDevices: boolean;
   public wrapAround: boolean;
   public disableKeyboardNav: boolean;
+  public disableScrolling: boolean;
   constructor() {
     this.fadeDuration = 0.7;
     this.resizeDuration = 0.5;
@@ -19,5 +20,6 @@ export class LightboxConfig {
     this.alwaysShowNavOnTouchDevices = false;
     this.wrapAround = false;
     this.disableKeyboardNav = false;
+    this.disableScrolling = false;
   }
 }
