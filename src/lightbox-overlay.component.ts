@@ -41,7 +41,7 @@ export class LightboxOverlayComponent implements AfterViewInit, OnDestroy {
     this._rendererRef.setElementStyle(this._elemRef.nativeElement,
       '-webkit-animation-duration', `${fadeDuration}s`);
     this._rendererRef.setElementStyle(this._elemRef.nativeElement,
-      '-animation-duration', `${fadeDuration}s`);
+      'animation-duration', `${fadeDuration}s`);
     this._sizeOverlay();
   }
 
