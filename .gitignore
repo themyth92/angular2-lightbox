@@ -8,5 +8,4 @@ src/*.js
 *.metadata.json
 *.css
 *.log
-*.ts
 /dist
