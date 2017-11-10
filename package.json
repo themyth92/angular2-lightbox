@@ -33,10 +33,10 @@
     "zone.js": "^0.8.18"
   },
   "scripts": {
-    "start": "ng serve",
-    "build": "ng build",
-    "test": " ng lint && ng test",
-    "lint": "ng lint",
+    "start": "./node_modules/.bin/ng serve",
+    "build": "./node_modules/.bin/ng build",
+    "test": " ./node_modules/.bin/ng lint && ./node_modules/.bin/ng test",
+    "lint": "./node_modules/.bin/ng lint",
     "prepublishOnly": "./node_modules/.bin/ngc && ./node_modules/.bin/copyfiles -u 1 src/img/* src/*.js src/*.js.map src/*.ts src/*.metadata.json src/*.css .",
     "postpublish": "./node_modules/.bin/del '*.{service,component,module,spec,ngfactory}.js' '*.{metadata,ngsummary}.json' index.js webpack.config.js  '*.{ts,css,map}' '{compiled,img}' 'src/*.{js,map,json}'"
   },
