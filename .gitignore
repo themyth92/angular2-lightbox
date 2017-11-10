@@ -9,3 +9,4 @@ src/*.js
 *.css
 *.log
 *.ts
+/dist

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'demo',
   template: `
     <div class="column has-text-centered">
-      <div class="img-row" *ngFor="let image of _albums; let i=index">
+      <div class="img-row" *ngFor="let image of albums; let i=index">
         <img class="img-frame" [src]="image.thumb" (click)="open(i)"/>
       </div>
     </div>
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
   }
 })
 export class AppComponent {
-  private _albums: Array<IAlbum>;
+  public albums: Array<IAlbum>;
   private _options: Object;
   private _subscription: Subscription;
   constructor(
@@ -24,7 +24,7 @@ export class AppComponent {
     private _lightboxEvent: LightboxEvent,
     private _lighboxConfig: LightboxConfig
   ) {
-    this._albums = [];
+    this.albums = [];
     this._options = {};
     for (let i = 1; i <= 4; i++) {
       const src = 'demo/img/image' + i + '.jpg';
@@ -36,7 +36,7 @@ export class AppComponent {
          thumb: thumb
       };
 
-      this._albums.push(album);
+      this.albums.push(album);
     }
 
     // set default config
@@ -47,7 +47,7 @@ export class AppComponent {
     this._subscription = this._lightboxEvent.lightboxEvent$.subscribe((event: IEvent) => this._onReceivedEvent(event));
 
     // override the default config
-    this._lightbox.open(this._albums, index, { wrapAround: true, showImageNumberLabel: true });
+    this._lightbox.open(this.albums, index, { wrapAround: true, showImageNumberLabel: true });
   }
 
   private _onReceivedEvent(event: IEvent): void {

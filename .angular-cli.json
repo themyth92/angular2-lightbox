@@ -1,0 +1,40 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "angular2-lightbox"
+  },
+  "apps": [
+    {
+      "root": ".",
+      "outDir": "dist",
+      "assets": [
+        { "glob": "**/*", "input": "./demo/img/", "output": "./demo/img/" }
+      ],
+      "index": "index.html",
+      "main": "demo/main.ts",
+      "polyfills": "demo/polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.json",
+      "testTsconfig": "tsconfig.json",
+      "styles": [
+        "./node_modules/angular2-lightbox/lightbox.css",
+        "./demo/app.css"
+      ],
+      "scripts": []
+    }
+  ],
+  "lint": [
+    {
+      "project": "tslin.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}
