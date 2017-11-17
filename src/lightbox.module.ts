@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { Lightbox } from './lightbox.service';
 import { LightboxComponent } from './lightbox.component';
 import { LightboxConfig } from './lightbox-config.service';
