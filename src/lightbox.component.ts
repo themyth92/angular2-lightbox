@@ -5,14 +5,11 @@ import {
   Inject,
   Input,
   OnDestroy,
-  OnChanges,
   Renderer,
-  SimpleChange,
   ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent, LightboxWindowRef } from './lightbox-event.service';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   template: `
