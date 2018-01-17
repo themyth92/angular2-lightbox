@@ -72,7 +72,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     // initialize data
     this.options = this.options || {};
     this.album = this.album || [];
-    this.currentImageIndex = this.currentImageIndex || null;
+    this.currentImageIndex = this.currentImageIndex || 0;
     this._windowRef = this._lightboxWindowRef.nativeWindow;
 
     // control the interactive of the directive
