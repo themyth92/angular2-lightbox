@@ -17,7 +17,6 @@
     ]
   },
   "include": [
-    "demo/**/*",
-    "node_modules/angular2-lightbox/index.ts"
+    "demo/**/*"
   ]
 }
