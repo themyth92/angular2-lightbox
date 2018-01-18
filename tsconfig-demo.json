@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "outDir": "./compiled",
     "sourceMap": true,
     "declaration": true,
     "moduleResolution": "node",
@@ -16,6 +17,6 @@
     ]
   },
   "include": [
-    "src/*.ts"
+    "demo/**/*"
   ]
 }
