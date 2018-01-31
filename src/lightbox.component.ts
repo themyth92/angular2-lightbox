@@ -6,9 +6,10 @@ import {
   Input,
   OnDestroy,
   Renderer,
-  ViewChild
+  SecurityContext,
+  ViewChild,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent, LightboxWindowRef } from './lightbox-event.service';
 
 @Component({
@@ -67,6 +68,7 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     private _lightboxEvent: LightboxEvent,
     public _lightboxElem: ElementRef,
     private _lightboxWindowRef: LightboxWindowRef,
+    private _sanitizer: DomSanitizer,
     @Inject(DOCUMENT) private _documentRef: any
   ) {
     // initialize data
@@ -198,7 +200,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     preloader.onload = () => {
       this._onLoadImageSuccess();
     }
-    preloader.src = this.album[this.currentImageIndex].src;
+
+    const src: any = this.album[this.currentImageIndex].src;
+    preloader.src = this._sanitizer.sanitize(SecurityContext.URL, src);
   }
 
   /**
@@ -249,9 +253,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
   }
 
   private _sizeContainer(imageWidth: number, imageHeight: number): void {
-    const oldWidth  = this._outerContainerElem.nativeElement.offsetWidth;
+    const oldWidth = this._outerContainerElem.nativeElement.offsetWidth;
     const oldHeight = this._outerContainerElem.nativeElement.offsetHeight;
-    const newWidth  = imageWidth + this._cssValue.containerRightPadding + this._cssValue.containerLeftPadding +
+    const newWidth = imageWidth + this._cssValue.containerRightPadding + this._cssValue.containerLeftPadding +
       this._cssValue.imageBorderWidthLeft + this._cssValue.imageBorderWidthRight;
     const newHeight = imageHeight + this._cssValue.containerTopPadding + this._cssValue.containerBottomPadding +
       this._cssValue.imageBorderWidthTop + this._cssValue.imageBorderWidthBottom;
@@ -508,9 +512,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     switch (event.id) {
       case LIGHTBOX_EVENT.CLOSE:
         this._end();
-      break;
+        break;
       default:
-      break;
+        break;
     }
   }
 }
