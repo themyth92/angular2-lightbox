@@ -1,6 +1,6 @@
 {
   "name": "angular2-lightbox",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A port angular2 for lightbox2",
   "main": "index.js",
   "dependencies": {},
@@ -13,7 +13,7 @@
     "@angular/platform-browser": "^5.0.1",
     "@angular/platform-browser-dynamic": "^5.0.1",
     "@types/jasmine": "^2.5.44",
-    "angular2-lightbox": "^1.2.2",
+    "angular2-lightbox": "^1.2.3",
     "awesome-typescript-loader": "^3.1.2",
     "copyfiles": "^1.2.0",
     "core-js": "^2.4.1",
