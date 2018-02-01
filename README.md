@@ -142,6 +142,7 @@ alwaysShowNavOnTouchDevices | **false** | Determine whether to show `left/right`
 wrapAround | **false** | Determine whether to move to the start of the album when user reaches the end of album and vice versa. Set it to **true** to enable this feature.
 disableKeyboardNav | **false** | Determine whether to disable navigation using keyboard event.
 disableScrolling | **false** | If **true**, prevent the page from scrolling while Lightbox is open. This works by settings overflow hidden on the body.
+centerVertically | **false** | If **true**, images will be centered vertically to the screen.
 
 **NOTE**: You can either override default config or during a specific opening window
 1. Override default config
