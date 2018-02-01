@@ -331,8 +331,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       this.options.positionFromTop;
     const left = this._windowRef.pageXOffset || this._documentRef.documentElement.scrollLeft;
 
-    if (!this.options.centerVertically)
+    if (!this.options.centerVertically) {
       this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${top}px`);
+    }
 
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'left', `${left}px`);
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'display', 'block');
