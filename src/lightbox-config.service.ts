@@ -11,6 +11,7 @@ export class LightboxConfig {
   public wrapAround: boolean;
   public disableKeyboardNav: boolean;
   public disableScrolling: boolean;
+  public centerVertically: boolean;
   constructor() {
     this.fadeDuration = 0.7;
     this.resizeDuration = 0.5;
@@ -21,5 +22,6 @@ export class LightboxConfig {
     this.wrapAround = false;
     this.disableKeyboardNav = false;
     this.disableScrolling = false;
+    this.centerVertically = false;
   }
 }
