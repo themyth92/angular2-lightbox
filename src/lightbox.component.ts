@@ -252,12 +252,18 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._sizeContainer(imageWidth, imageHeight);
 
     if (this.options.centerVertically) {
-      var scrollOffset = this._documentRef.documentElement.scrollTop;
-      var viewOffset = windowHeight / 2 - imageHeight / 2;
-      var topDistance = scrollOffset + viewOffset;
-
-      this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${topDistance}px`);
+      this._centerVertically(imageWidth, imageHeight);
     }
+  }
+
+  private _centerVertically(imageWidth: number, imageHeight: number): void {
+    const scrollOffset = this._documentRef.documentElement.scrollTop;
+    const windowHeight = this._windowRef.innerHeight;
+
+    const viewOffset = windowHeight / 2 - imageHeight / 2;
+    const topDistance = scrollOffset + viewOffset;
+
+    this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${topDistance}px`);
   }
 
   private _sizeContainer(imageWidth: number, imageHeight: number): void {
