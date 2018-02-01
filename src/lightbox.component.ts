@@ -250,6 +250,14 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     }
 
     this._sizeContainer(imageWidth, imageHeight);
+
+    if (this.options.centerVertically) {
+      var scrollOffset = this._documentRef.documentElement.scrollTop;
+      var viewOffset = windowHeight / 2 - imageHeight / 2;
+      var topDistance = scrollOffset + viewOffset;
+
+      this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${topDistance}px`);
+    }
   }
 
   private _sizeContainer(imageWidth: number, imageHeight: number): void {
@@ -317,7 +325,9 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
       this.options.positionFromTop;
     const left = this._windowRef.pageXOffset || this._documentRef.documentElement.scrollLeft;
 
-    this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${top}px`);
+    if (!this.options.centerVertically)
+      this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'top', `${top}px`);
+
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'left', `${left}px`);
     this._rendererRef.setElementStyle(this._lightboxElem.nativeElement, 'display', 'block');
 
