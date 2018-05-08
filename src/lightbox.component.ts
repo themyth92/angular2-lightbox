@@ -5,6 +5,7 @@ import {
   Inject,
   Input,
   OnDestroy,
+  OnInit,
   Renderer,
   SecurityContext,
   ViewChild,
@@ -44,7 +45,7 @@ import { LightboxEvent, LIGHTBOX_EVENT, IAlbum, IEvent, LightboxWindowRef } from
     '[class]': 'ui.classList'
   }
 })
-export class LightboxComponent implements AfterViewInit, OnDestroy {
+export class LightboxComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() album: Array<IAlbum>;
   @Input() currentImageIndex: number;
   @Input() options: any;
@@ -107,6 +108,14 @@ export class LightboxComponent implements AfterViewInit, OnDestroy {
     this._lightboxElem = this._elemRef;
     this._event.subscription = this._lightboxEvent.lightboxEvent$
       .subscribe((event: IEvent) => this._onReceivedEvent(event));
+  }
+
+  public ngOnInit(): void {
+    this.album.forEach(album => {
+      if (album.caption) {
+        album.caption = this._sanitizer.sanitize(SecurityContext.HTML, album.caption);
+      }
+    });
   }
 
   public ngAfterViewInit(): void {
