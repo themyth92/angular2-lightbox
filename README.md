@@ -6,6 +6,9 @@ A [lighbox2](https://github.com/lokesh/lightbox2) implementation port to use wit
 This module works with angular 2.x and 4.x
 [demo](https://themyth92.com/project/angular2-lightbox/)
 
+## NOTICE:
+For angular >= 5 support. Please use [ngx-lightbox](https://github.com/themyth92/ngx-lightbox).
+
 ## Installation
 `npm install --save angular2-lightbox`
 
